@@ -18,7 +18,7 @@ body {
   height: 100vh;
   width: 100%;
   /* Substitui 'bg-capa.jpg' pelo nome da tua foto */
-  background: url('bg-capa.jpeg') center/cover no-repeat; 
+  background: url('bg-capa.JPG') center/cover no-repeat; 
   display: flex;
   align-items: center;
   justify-content: center;

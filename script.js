@@ -1,4 +1,4 @@
-// Abrir o convite ao clicar no botão e reproduzir a música
+// 1. Abrir o convite ao clicar no botão e reproduzir a música
 function openInvitation() {
   const audio = document.getElementById('bg-music');
   const playBtn = document.getElementById('play-pause-btn');
@@ -18,7 +18,7 @@ function openInvitation() {
   }
 }
 
-// Controlar Música Flutuante manualmente
+// 2. Controlar Música Flutuante manualmente
 function toggleMusic() {
   const audio = document.getElementById('bg-music');
   const playBtn = document.getElementById('play-pause-btn');
@@ -37,7 +37,7 @@ function toggleMusic() {
   }
 }
 
-// Contagem Regressiva para 18 de Dezembro de 2026
+// 3. Contagem Regressiva para 18 de Dezembro de 2026
 const targetDate = new Date('2026-12-18T10:00:00').getTime();
 
 function updateCountdown() {
@@ -65,7 +65,7 @@ function updateCountdown() {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// RSVP / Confirmação de Presença
+// 4. RSVP / Confirmação de Presença
 function selecionarOpcao(elemento) {
   const cards = document.querySelectorAll('.radio-card');
   cards.forEach(card => card.classList.remove('active'));
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Mural de Mensagens
+  // 5. Mural de Mensagens
   const muralForm = document.getElementById("mural-form");
   if (muralForm) {
     muralForm.addEventListener("submit", function(e) {
@@ -134,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   carregarMensagensDoStorage();
-  atualizarInterfaceEHistorico();
   animarAoScroll();
 });
 
@@ -177,7 +176,7 @@ function escapeHtml(text) {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-// Detalhes de Pagamento / Presentes
+// 6. Detalhes de Pagamento (M-Pesa / Banco)
 function toggleDetalhes(tipo) {
   const mpesa = document.getElementById('detalhes-mpesa');
   const banco = document.getElementById('detalhes-banco');
@@ -199,7 +198,7 @@ function toggleDetalhes(tipo) {
   }
 }
 
-// Escolha de Presentes da Lista
+// 7. Escolha de Presentes da Lista
 function escolherPresente(presente, btn) {
   const dataHora = new Date().toLocaleString("pt-PT");
   let registos = JSON.parse(localStorage.getItem("registosPresentes") || "[]");
@@ -210,7 +209,6 @@ function escolherPresente(presente, btn) {
   }
 
   marcarComoEscolhido(btn);
-  atualizarInterfaceEHistorico();
 
   const numeroTelefone = "258845770605";
   const textoMensagem = `Olá! O seguinte presente foi escolhido na lista do site: 🎁 *${presente}* (Data: ${dataHora})`;
@@ -226,41 +224,7 @@ function marcarComoEscolhido(btn) {
   btn.disabled = true;
 }
 
-function atualizarInterfaceEHistorico() {
-  const registos = JSON.parse(localStorage.getItem("registosPresentes") || "[]");
-  const listaHtml = document.getElementById("listaRegistosInternos");
-  if (!listaHtml) return;
-  
-  listaHtml.innerHTML = "";
-
-  if (registos.length === 0) {
-    listaHtml.innerHTML = "<li style='color: #888;'>Nenhum presente escolhido até o momento.</li>";
-    return;
-  }
-
-  registos.forEach(reg => {
-    const botoes = document.querySelectorAll("button[data-presente]");
-    botoes.forEach(btn => {
-      if (btn.getAttribute("data-presente") === reg.presente) {
-        marcarComoEscolhido(btn);
-      }
-    });
-
-    const li = document.createElement("li");
-    li.style.marginBottom = "4px";
-    li.innerHTML = `<strong>${reg.presente}</strong> <span style="color: #777; font-size: 0.75rem;">(${reg.data})</span>`;
-    listaHtml.appendChild(li);
-  });
-}
-
-function limparRegistos() {
-  if (confirm("Tem certeza que deseja apagar o histórico de escolhas?")) {
-    localStorage.removeItem("registosPresentes");
-    location.reload();
-  }
-}
-
-// Efeito de animação ao fazer scroll
+// 8. Efeito de animação ao fazer scroll
 function animarAoScroll() {
   const elementos = document.querySelectorAll('.reveal');
   const alturaJanela = window.innerHeight;

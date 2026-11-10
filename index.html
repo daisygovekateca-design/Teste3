@@ -11,9 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="style.css">
-  <!--efeito de ascender*/
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
+  <!-- Firebase SDKs para sincronizar mesas e convidados em tempo real -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+  <script src="config.js"></script>
 </head>
 <body>
 
@@ -48,23 +51,22 @@
           <img src="rassula.JPG" alt="rassula" class="avatar-img">
         </div>
         <h3 class="noivo-nome">Rassula</h3>
-                  <p class="pais-label">Pais da Noiva:</p>
-          <p class="pais-nome">Chamaúne Jamal Saiete</p>
-          <p class="pais-nome">Maria Amélia Ernesto Mate</p>
+        <p class="pais-label">Pais da Noiva:</p>
+        <p class="pais-nome">Chamaúne Jamal Saiete</p>
+        <p class="pais-nome">Maria Amélia Ernesto Mate</p>
       </div>
 
       <div class="heart-divider">❤️</div>
-      <p class="sub-date">18 DE Dezembro DE 2026</p>
+      <p class="sub-date">18 DE DEZEMBRO DE 2026</p>
 
       <div class="noivo-card">
         <div class="avatar-frame">
           <img src="felix.JPG" alt="felix" class="avatar-img">
         </div>
         <h3 class="noivo-nome">Felix</h3>
-                  <p class="pais-label">Pais do Noivo:</p>
-          <p class="pais-nome">Emídio Feliz Macie
-</p>
-          <p class="pais-nome">Erzilia Alice Moisés Timane</p>
+        <p class="pais-label">Pais do Noivo:</p>
+        <p class="pais-nome">Emídio Feliz Macie</p>
+        <p class="pais-nome">Erzilia Alice Moisés Timane</p>
       </div>
     </section>
 
@@ -73,19 +75,18 @@
       <h2 class="section-title">Programa</h2>
       
       <div class="card-info">
-      <div class="card-icon">⛪</div>
+        <div class="card-icon">⛪</div>
         <h3>Cerimónia Religiosa</h3>
         <p class="card-time">10:00 da manhã</p>
         <p class="card-location">Igreja Assembleia de Deus da Baixa,<br>congregação das Mahotas</p>
         <a href="https://maps.app.goo.gl/ccy1w7FT9wXGf1zg7?g_st=ic" target="_blank" class="btn-outline">Ver Localização →</a>
       </div>
 
-  <div class="card-info">
-      <div class="card-icon">💍</div>
+      <div class="card-info">
+        <div class="card-icon">💍</div>
         <h3>Cerimónia Civil</h3>
         <p class="card-time">14:00 da tarde</p>
-       <p class="card-location">Salão de Festas Quinta Lya, Mahotas</p>
-        
+        <p class="card-location">Salão de Festas Quinta Lya, Mahotas</p>
       </div>
       
       <div class="card-info">
@@ -120,485 +121,194 @@
       </div>
     </section>
 
-    <!-- RSVP / Confirmação de Presença -->
-  <!-- Confirmação de Presença -->
- <section class="section rsvp-section reveal">
-    <h2 class="section-title">Confirme a sua Presença</h2>
+    <!-- Confirmação de Presença -->
+    <section class="section rsvp-section reveal">
+      <h2 class="section-title">Confirme a sua Presença</h2>
 
-    <form id="rsvp-form" class="rsvp-form">
-      <div class="form-group">
-        <label> Convidado *</label>
-        <input type="text" id="nome1" placeholder="Nome completo" required>
-      </div>
-
-      <div class="form-group">
-        <label>Acompanhante</label>
-        <input type="text" id="nome2" placeholder="Nome completo (opcional)">
-      </div>
-
-      <div class="form-group">
-        <label>Confirmar Presença? *</label>
-        <div class="radio-group">
-          <label class="radio-card active" onclick="selecionarOpcao(this)">
-            <input type="radio" name="presenca" value="sim" checked>
-            <span>✓ Sim, estarei presente</span>
-          </label>
-          <label class="radio-card" onclick="selecionarOpcao(this)">
-            <input type="radio" name="presenca" value="nao">
-            <span>✕ Não poderei ir</span>
-          </label>
+      <form id="rsvp-form" class="rsvp-form">
+        <div class="form-group">
+          <label>Convidado *</label>
+          <input type="text" id="nome1" placeholder="Nome completo" required>
         </div>
+
+        <div class="form-group">
+          <label>Acompanhante</label>
+          <input type="text" id="nome2" placeholder="Nome completo (opcional)">
+        </div>
+
+        <div class="form-group">
+          <label>Confirmar Presença? *</label>
+          <div class="radio-group">
+            <label class="radio-card active" onclick="selecionarOpcao(this)">
+              <input type="radio" name="presenca" value="sim" checked>
+              <span>✓ Sim, estarei presente</span>
+            </label>
+            <label class="radio-card" onclick="selecionarOpcao(this)">
+              <input type="radio" name="presenca" value="nao">
+              <span>✕ Não poderei ir</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Enviar</button>
+      </form>
+    </section>
+
+    <!-- Secção Encontre a sua Mesa (Sincronizado com o Firebase do Protocolo) -->
+    <div class="container" style="text-align: center; margin: 40px auto; max-width: 400px; padding: 0 15px;">
+      <h2 style="color: #c5a059;">Encontre a sua Mesa</h2>
+      <p style="color: #666; font-size: 0.95rem;">Digite o seu nome para consultar a sua mesa e lugar:</p>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; align-items: center; margin-top: 15px;">
+        <input type="text" id="searchInput" placeholder="Digite o seu nome..." style="width: 100%; padding: 12px 16px; border: 1px solid #c5a059; border-radius: 25px; outline: none; text-align: center; box-sizing: border-box; background: #fff;">
+        <button type="button" id="btnPesquisar" onclick="executarPesquisaMesa()" style="background-color: #c5a059; color: #ffffff; border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; cursor: pointer; width: 100%; max-width: 220px; font-size: 0.95rem;">
+          Pesquisar Mesa 🔍
+        </button>
       </div>
 
-      <button type="submit" class="btn-submit">Enviar</button>
-    </form>
-  </section>
-
-<!-- Secção Encontre a sua Mesa -->
-<div class="container" style="text-align: center; margin: 40px auto; max-width: 400px; padding: 0 15px;">
-  <h2 style="color: #c5a059;">Encontre a sua Mesa</h2>
-  <p style="color: #666; font-size: 0.95rem;">Digite o seu nome para consultar a sua mesa e lugar:</p>
-
-  <!-- Caixa de Pesquisa com Botão -->
-  <div style="display: flex; flex-direction: column; gap: 10px; align-items: center; margin-top: 15px;">
-    <input type="text" id="searchInput" placeholder="Digite o seu nome..." style="width: 100%; padding: 12px 16px; border: 1px solid #c5a059; border-radius: 25px; outline: none; text-align: center; box-sizing: border-box; background: #fff;">
-    
-    <!-- Botão de Pesquisar -->
-    <button type="button" id="btnPesquisar" onclick="executarPesquisaMesa()" style="background-color: #c5a059; color: #ffffff; border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; cursor: pointer; width: 100%; max-width: 220px; font-size: 0.95rem;">
-      Pesquisar Mesa 🔍
-    </button>
-  </div>
-
-  <!-- Área onde vai aparecer o resultado -->
-  <div id="results" style="margin-top: 20px;"></div>
-</div>
-
-<!-- Importa a lista externa com os 200 convidados -->
-<script src="convidados.js"></script>
-
-<!-- Script com a lógica de pesquisa inteligente -->
-<script>
-  // FUNÇÃO AUXILIAR: Remove acentos e converte para minúsculas
-  function limparTexto(texto) {
-    if (!texto) return "";
-    return texto
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .trim();
-  }
-
-  // FUNÇÃO AUXILIAR: Compara se os nomes coincidem
-  function nomesCoincidem(nomeBuscado, nomeCadastrado) {
-    const busca = limparTexto(nomeBuscado);
-    const cadastro = limparTexto(nomeCadastrado);
-
-    if (!busca) return false;
-    if (cadastro.includes(busca) || busca.includes(cadastro)) return true;
-
-    const palavrasBusca = busca.split(/\s+/);
-    const palavrasCadastro = cadastro.split(/\s+/);
-
-    if (palavrasBusca.every(palavra => cadastro.includes(palavra))) return true;
-    if (palavrasCadastro.every(palavra => busca.includes(palavra))) return true;
-
-    return false;
-  }
-
-  // FUNÇÃO PRINCIPAL DE PESQUISA
-  function executarPesquisaMesa() {
-    const inputElement = document.getElementById('searchInput');
-    const resultsDiv = document.getElementById('results');
-    
-    if (!inputElement || !resultsDiv) return;
-
-    const termoDigitado = inputElement.value;
-    resultsDiv.innerHTML = '';
-
-    if (!termoDigitado.trim()) {
-      resultsDiv.innerHTML = '<p style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px;">Por favor, digite o seu nome para pesquisar.</p>';
-      return;
-    }
-
-    // Procura na 'listaConvidados' vinda do convidados.js
-    const encontrados = listaConvidados.filter(c => nomesCoincidem(termoDigitado, c.nome));
-
-    if (encontrados.length === 0) {
-      resultsDiv.innerHTML = '<p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Nenhum convidado encontrado com esse nome. Verifique se digitou corretamente.</p>';
-      return;
-    }
-
-    const confirmadosNoNavegador = JSON.parse(localStorage.getItem('presencasConfirmadas') || '[]');
-
-    encontrados.forEach(item => {
-      const card = document.createElement('div');
-      const estaConfirmado = item.confirmado || confirmadosNoNavegador.includes(limparTexto(item.nome));
-
-      if (estaConfirmado) {
-        card.style.cssText = "background: #ffffff; border: 1px solid #c5a059; border-radius: 16px; padding: 15px; margin-top: 10px; box-shadow: 0 4px 10px rgba(197, 160, 89, 0.15); text-align: left;";
-        card.innerHTML = `
-          <div style="font-weight: bold; color: #222; font-size: 1rem;">👤 ${item.nome}</div>
-          <div style="color: #c5a059; font-weight: bold; margin-top: 6px; font-size: 1.05rem;">📍 ${item.mesa}</div>
-         <!-- <div style="color: #27ae60; font-size: 0.8rem; font-weight: 600; margin-top: 6px;">✓ Bem vindo</div> -->
-        `;
-      } else {
-        card.style.cssText = "background: #fff8f8; border: 1px solid #e74c3c; border-radius: 16px; padding: 15px; margin-top: 10px; text-align: left;";
-        card.innerHTML = `
-          <div style="font-weight: bold; color: #222; font-size: 1rem;">👤 ${item.nome}</div>
-          <div style="color: #c0392b; font-size: 0.85rem; font-weight: 600; margin-top: 6px;">⚠️ A sua presença ainda não foi confirmada!</div>
-          <p style="font-size: 0.8rem; color: #555; margin: 6px 0 10px 0;">Para consultar a sua mesa, por favor confirme a sua presença no formulário acima primeiro.</p>
-        `;
-      }
-      
-      resultsDiv.appendChild(card);
-    });
-  }
-  
-</script>
-
-
-<!-- Mural de Mensagens -->
-  <section class="section mural-section reveal">
-    <h2 class="section-title">Mural de Mensagens</h2>
-    <p class="section-desc">Deixe as vossas palavras de amizade e carinho para os noivos celebrando o seu casamento.</p>
-
-    <!-- Formulário para Publicar Mensagem no Mural -->
-    <form id="mural-form" class="mural-form">
-      <div class="form-group">
-        <label>Seu Nome *</label>
-        <input type="text" id="mural-nome" placeholder="Seu nome completo" required>
-      </div>
-
-      <div class="form-group">
-        <label>Mensagem para os Noivos *</label>
-        <textarea id="mural-texto" placeholder="Deixe uma mensagem especial para nós..." rows="3" required></textarea>
-      </div>
-
-      <button type="submit" class="btn-mural">Enviar Mensagem</button>
-    </form>
-
-    <!-- Cartões de Mensagens Publicadas -->
-    <div id="mural-cards" class="mural-cards">
-      <div class="mural-card">
-        <h4>Maria João</h4>
-        <span class="mural-date">10 de Outubro, 2026</span>
-        <p>"Desejo toda a felicidade do mundo a vocês dois! Que este amor seja eterno."</p>
-        <span class="mural-footer">Com carinho</span>
-      </div>
-
-      <div class="mural-card">
-        <h4>Carlos Mendes</h4>
-        <span class="mural-date">18 de Outubro, 2026</span>
-        <p>"Parabéns pelo grande dia! Mal posso esperar para celebrar convosco."</p>
-        <span class="mural-footer">Com carinho</span>
-      </div>
+      <div id="results" style="margin-top: 20px;"></div>
     </div>
-  </section>
-    <!-- Galeria -->
-   <!--section class="section galeria-section"
-      <!--h2 class="section-title">Nossa Galeria</h2>
-      <!---p class="section-desc">Alguns dos nossos momentos registados enquanto caminhamos em direção ao altar.</p-->
-      
-      <!--div class="gallery-grid">
-        <!--div class="gallery-item"><img src="foto1.jpg" alt="Foto 1"></div>
-        <!--div class="gallery-item"><img src="foto2.jpg" alt="Foto 2"></div>
-        <!--div class="gallery-item"><img src="foto3.jpg" alt="Foto 3"></div>
-        <!--div class="gallery-item"><img src="foto4.jpg" alt="Foto 4"></div>
-      <!--/div>
-    <!--/section>-->
+
+    <script>
+      // Inicializa o Firebase no Convite e lê as mesas em tempo real do protocolo
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      const dbRefConvite = firebase.database().ref('dadosMesas');
+
+      let listaConvidadosDinamica = [];
+
+      dbRefConvite.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          let arrayDados = Array.isArray(data) ? data : Object.values(data);
+          listaConvidadosDinamica = [];
+          
+          arrayDados.forEach(grupo => {
+            if (grupo && grupo.convidados) {
+              grupo.convidados.forEach(c => {
+                listaConvidadosDinamica.push({
+                  id: c.id,
+                  nome: c.nome,
+                  acompanhantes: c.acompanhantes || "-",
+                  mesa: grupo.mesa,
+                  confirmado: c.acomodado
+                });
+              });
+            }
+          });
+        }
+      });
+
+      function limparTexto(texto) {
+        if (!texto) return "";
+        return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+      }
+
+      function nomesCoincidem(nomeBuscado, nomeCadastrado) {
+        const busca = limparTexto(nomeBuscado);
+        const cadastro = limparTexto(nomeCadastrado);
+
+        if (!busca) return false;
+        if (cadastro.includes(busca) || busca.includes(cadastro)) return true;
+
+        const palavrasBusca = busca.split(/\s+/);
+        const palavrasCadastro = cadastro.split(/\s+/);
+
+        if (palavrasBusca.every(palavra => cadastro.includes(palavra))) return true;
+        if (palavrasCadastro.every(palavra => busca.includes(palavra))) return true;
+
+        return false;
+      }
+
+      function executarPesquisaMesa() {
+        const inputElement = document.getElementById('searchInput');
+        const resultsDiv = document.getElementById('results');
+        
+        if (!inputElement || !resultsDiv) return;
+
+        const termoDigitado = inputElement.value;
+        resultsDiv.innerHTML = '';
+
+        if (!termoDigitado.trim()) {
+          resultsDiv.innerHTML = '<p style="color: #e74c3c; font-size: 0.85rem; margin-top: 10px;">Por favor, digite o seu nome para pesquisar.</p>';
+          return;
+        }
+
+        const encontrados = listaConvidadosDinamica.filter(c => nomesCoincidem(termoDigitado, c.nome));
+
+        if (encontrados.length === 0) {
+          resultsDiv.innerHTML = '<p style="color: #666; font-size: 0.9rem; margin-top: 10px;">Nenhum convidado encontrado com esse nome.</p>';
+          return;
+        }
+
+        encontrados.forEach(item => {
+          const card = document.createElement('div');
+          card.style.cssText = "background: #ffffff; border: 1px solid #c5a059; border-radius: 16px; padding: 15px; margin-top: 10px; box-shadow: 0 4px 10px rgba(197, 160, 89, 0.15); text-align: left;";
+          card.innerHTML = `
+            <div style="font-weight: bold; color: #222; font-size: 1rem;">👤 ${item.nome}</div>
+            <div style="color: #c5a059; font-weight: bold; margin-top: 6px; font-size: 1.05rem;">📍 ${item.mesa}</div>
+            <div style="color: #666; font-size: 0.8rem; margin-top: 4px;">Acompanhantes: ${item.acompanhantes}</div>
+          `;
+          resultsDiv.appendChild(card);
+        });
+      }
+    </script>
+
+    <!-- Mural de Mensagens -->
+    <section class="section mural-section reveal">
+      <h2 class="section-title">Mural de Mensagens</h2>
+      <p class="section-desc">Deixe as vossas palavras de amizade e carinho para os noivos celebrando o seu casamento.</p>
+
+      <form id="mural-form" class="mural-form">
+        <div class="form-group">
+          <label>Seu Nome *</label>
+          <input type="text" id="mural-nome" placeholder="Seu nome completo" required>
+        </div>
+
+        <div class="form-group">
+          <label>Mensagem para os Noivos *</label>
+          <textarea id="mural-texto" placeholder="Deixe uma mensagem especial para nós..." rows="3" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-mural">Enviar Mensagem</button>
+      </form>
+
+      <div id="mural-cards" class="mural-cards"></div>
+    </section>
 
     <!-- Lista de Presentes -->
-   <!-- Lista de Presentes -->
-  <section class="section presentes-section reveal">
-    <!-- Ícone de presente num círculo elegante -->
-    <div class="presentes-icon-circle">
-      🎁
-    </div>
+    <section class="section presentes-section reveal">
+      <div class="presentes-icon-circle">🎁</div>
+      <h2 class="presentes-title">Lista de Presentes</h2>
+      <p class="presentes-desc">A vossa presença é o nosso maior presente, mas se desejarem nos presentear, deixamos aqui as opções disponíveis:</p>
 
-    <h2 class="presentes-title">Lista de Presentes</h2>
-    <p class="presentes-desc">
-      A vossa presença é o nosso maior presente, mas se desejarem nos presentear, deixamos aqui as opções disponíveis:
-    </p>
+      <div class="presentes-buttons">
+        <button type="button" class="btn-presente" onclick="toggleDetalhes('mpesa')">📱 M-Pesa</button>
+        <div id="detalhes-mpesa" class="detalhes-info">
+          <p><strong>M-Pesa:</strong> 849301792</p>
+          <p><strong>Nome:</strong> Rassula Saiete</p>
+        </div>
 
-    <div class="presentes-buttons">
-      <!-- Botão M-Pesa -->
-      <button type="button" class="btn-presente" onclick="toggleDetalhes('mpesa')">
-        📱 M-Pesa
-      </button>
-      
-      <!-- Caixa de Detalhes M-Pesa (aparece ABAIXO do botão) -->
-      <div id="detalhes-mpesa" class="detalhes-info">
-        <p><strong>M-Pesa:</strong> 849301792</p>
-        <p><strong>Nome:</strong> Rassula Saiete</p>
+        <button type="button" class="btn-presente" onclick="toggleDetalhes('banco')">💳 Transferência Bancária</button>
+        <div id="detalhes-banco" class="detalhes-info">
+          <p><strong>Banco:</strong> Millennium Bim</p>
+          <p><strong>Conta:</strong> 1252255063</p>
+          <p><strong>NIB:</strong> 000100000125225506357</p>
+          <p><strong>Titular:</strong> Félix Emídio Macie</p>
+        </div>
       </div>
+    </section>
 
-      <!-- Botão Transferência Bancária -->
-      <button type="button" class="btn-presente" onclick="toggleDetalhes('banco')">
-        💳 Transferência Bancária
-      </button>
+  </main>
 
-      <!-- Caixa de Detalhes Bancários (aparece ABAIXO do botão) -->
-      <div id="detalhes-banco" class="detalhes-info">
-        <p><strong>Banco:</strong> Millennium Bim</p>
-        <p><strong>Conta:</strong> 1252255063</p>
-        <p><strong>NIB:</strong> 000100000125225506357</p>
-        <p><strong>Titular:</strong> Félix Emídio Macie</p>
-      </div>
-      
-    </div>
-  </section>   
-
-<!-- Secção Lista de Presentes -->
-<!-- Secção Lista de Presentes -->
-<section style="text-align: center; margin: 40px auto; max-width: 450px; padding: 0 15px; font-family: sans-serif;">
-  <h2 style="color: #c5a059; font-size: 1.4rem; margin-bottom: 6px;">Lista de Presentes</h2>
-  <p style="color: #666; font-size: 0.88rem; margin-bottom: 20px;">
-    Caso prefira presentear em mãos, deixamos aqui algumas sugestões:
-  </p>
-
-  <!-- Grelha de Presentes (2 por linha) -->
-  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-
-    <!-- 1. Batedeira Planetária -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_6458.jpg" alt="Batedeira Planetária" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Batedeira Planetária</h3>
-        <button type="button" data-presente="Batedeira Planetária" onclick="escolherPresente('Batedeira Planetária', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 2. TV -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_6469.jpg" alt="TV" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">TV</h3>
-        <button type="button" data-presente="TV" onclick="escolherPresente('TV', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 3. Airfryer -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_6457.jpg" alt="Airfryer" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Airfryer</h3>
-        <button type="button" data-presente="Airfryer" onclick="escolherPresente('Airfryer', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 4. AC -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_8524.PNG" alt="AC" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">AC</h3>
-        <button type="button" data-presente="AC" onclick="escolherPresente('AC', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 5. Sofá -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_6471.jpg" alt="Sofá" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Sofá</h3>
-        <button type="button" data-presente="Sofá" onclick="escolherPresente('Sofá', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 6. Mesa de jantar -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_6473.jpg" alt="Mesa de jantar" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Mesa de jantar</h3>
-        <button type="button" data-presente="Mesa de jantar" onclick="escolherPresente('Mesa de jantar', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 7. Cama -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_8525.PNG" alt="Cama" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Cama</h3>
-        <button type="button" data-presente="Cama" onclick="escolherPresente('Cama', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 8. Estante -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_8582.PNG" alt="Estante" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Estante</h3>
-        <button type="button" data-presente="Estante" onclick="escolherPresente('Estante', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 9. Microondas -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_8529.PNG" alt="Microondas" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Microondas</h3>
-        <button type="button" data-presente="Microondas" onclick="escolherPresente('Microondas', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 10. Mesinha de centro -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_6467.jpeg" alt="Mesinha de centro" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Mesinha de centro</h3>
-        <button type="button" data-presente="Mesinha de centro" onclick="escolherPresente('Mesinha de centro', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 11. Geladeira -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_6474.jpg" alt="Geladeira" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Geladeira</h3>
-        <button type="button" data-presente="Geladeira" onclick="escolherPresente('Geladeira', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 12. Fogão -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="IMG_6456.jpg" alt="Fogão" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Fogão</h3>
-        <button type="button" data-presente="Fogão" onclick="escolherPresente('Fogão', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 13. Forno -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="forno.PNG" alt="Forno" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Forno</h3>
-        <button type="button" data-presente="Forno" onclick="escolherPresente('Forno', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-    <!-- 14. Congelador -->
-    <div style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
-      <img src="congelador.PNG" alt="Congelador" style="width: 100%; height: 110px; object-fit: cover;">
-      <div style="padding: 10px; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
-        <h3 style="font-size: 0.85rem; color: #222; margin: 0 0 8px 0; font-weight: 600;">Congelador</h3>
-        <button type="button" data-presente="Congelador" onclick="escolherPresente('Congelador', this)" style="background-color: #c5a059; color: #ffffff; border: none; padding: 8px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-          Escolher
-        </button>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Painel de Registo Interno (Onde as escolhas ficam guardadas discretamente) -->
-  <div style="margin-top: 40px; background: #f9f9f9; border: 1px dashed #c5a059; border-radius: 12px; padding: 15px; text-align: left;">
-    <h3 style="font-size: 0.95rem; color: #c5a059; margin-top: 0; display: flex; justify-content: space-between; align-items: center;">
-      <span>🔒 Registo Interno de Escolhas</span>
-      <button onclick="limparRegistos()" style="background: #ff4d4d; color: white; border: none; padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; cursor: pointer;">Limpar</button>
-    </h3>
-    <ul id="listaRegistosInternos" style="font-size: 0.8rem; color: #333; padding-left: 20px; margin: 0;">
-      <!-- Os itens escolhidos aparecem aqui automaticamente -->
-    </ul>
-  </div>
-</section>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  atualizarInterfaceEHistorico();
-});
-
-function marcarComoEscolhido(btn) {
-  btn.innerText = "Presente Escolhido";
-  btn.style.backgroundColor = "#999999";
-  btn.style.cursor = "not-allowed";
-  btn.disabled = true;
-}
-
-function escolherPresente(presente, btn) {
-  const dataHora = new Date().toLocaleString("pt-PT");
-  let registos = JSON.parse(localStorage.getItem("registosPresentes") || "[]");
-  
-  if (!registos.some(item => item.presente === presente)) {
-    registos.push({ presente: presente, data: dataHora });
-    localStorage.setItem("registosPresentes", JSON.stringify(registos));
-  }
-
-  marcarComoEscolhido(btn);
-  atualizarInterfaceEHistorico();
-
-  const numeroTelefone = "258845770605";
-  const textoMensagem = `Olá! O seguinte presente foi escolhido na lista do site: 🎁 *${presente}* (Data: ${dataHora})`;
-  const urlWhatsapp = `https://wa.me/${numeroTelefone}?text=${encodeURIComponent(textoMensagem)}`;
-
-  window.open(urlWhatsapp, "_blank");
-}
-
-function atualizarInterfaceEHistorico() {
-  const registos = JSON.parse(localStorage.getItem("registosPresentes") || "[]");
-  const listaHtml = document.getElementById("listaRegistosInternos");
-  if (!listaHtml) return;
-  
-  listaHtml.innerHTML = "";
-
-  if (registos.length === 0) {
-    listaHtml.innerHTML = "<li style='color: #888;'>Nenhum presente escolhido até o momento.</li>";
-    return;
-  }
-
-  registos.forEach(reg => {
-    const botoes = document.querySelectorAll("button[data-presente]");
-    botoes.forEach(btn => {
-      if (btn.getAttribute("data-presente") === reg.presente) {
-        marcarComoEscolhido(btn);
-      }
-    });
-
-    const li = document.createElement("li");
-    li.style.marginBottom = "4px";
-    li.innerHTML = `<strong>${reg.presente}</strong> <span style="color: #777; font-size: 0.75rem;">(${reg.data})</span>`;
-    listaHtml.appendChild(li);
-  });
-}
-
-function limparRegistos() {
-  if (confirm("Tem certeza que deseja apagar o histórico de escolhas?")) {
-    localStorage.removeItem("registosPresentes");
-    location.reload();
-  }
-}
-</script> </main>
   <!-- Rodapé -->
-   <footer class="footer">
-      <h2 class="names-script footer-names">Rassula & Felix</h2>
-      <p class="footer-date">18 DE Dezembro DE 2026</p>
-      <p class="footer-text">Obrigado por fazer parte deste momento tão especial das nossas vidas.</p>
-      <p class="footer-contact">Chelsea Saiete| Contacto: 84 203 2056</p>
-    </footer>
+  <footer class="footer">
+    <h2 class="names-script footer-names">Rassula & Felix</h2>
+    <p class="footer-date">18 DE DEZEMBRO DE 2026</p>
+    <p class="footer-text">Obrigado por fazer parte deste momento tão especial das nossas vidas.</p>
+    <p class="footer-contact">Chelsea Saiete | Contacto: 84 203 2056</p>
+  </footer>
 
   <!-- Player de Música Flutuante -->
   <div class="music-player-float">
