@@ -1,4 +1,4 @@
-	// Abrir o convite ao clicar no botão
+// Abrir o convite ao clicar no botão e reproduzir a música
 function openInvitation() {
   const audio = document.getElementById('bg-music');
   const playBtn = document.getElementById('play-pause-btn');
@@ -6,31 +6,38 @@ function openInvitation() {
   if (audio) {
     audio.play().then(() => {
       if (playBtn) playBtn.innerText = '⏸';
-    }).catch(err => console.log("Áudio:", err));
+    }).catch(err => {
+      console.log("Erro ao reproduzir áudio:", err);
+    });
   }
 
-  // Rola suavemente até o conteúdo
+  // Rola suavemente até o conteúdo principal
   const mainContent = document.getElementById('main-content');
   if (mainContent) {
     mainContent.scrollIntoView({ behavior: 'smooth' });
   }
 }
 
-// Controlar Música Flutuante
+// Controlar Música Flutuante manualmente
 function toggleMusic() {
   const audio = document.getElementById('bg-music');
   const playBtn = document.getElementById('play-pause-btn');
 
+  if (!audio) return;
+
   if (audio.paused) {
-    audio.play();
-    playBtn.innerText = '⏸';
+    audio.play().then(() => {
+      playBtn.innerText = '⏸';
+    }).catch(err => {
+      console.log("Erro ao dar play:", err);
+    });
   } else {
     audio.pause();
     playBtn.innerText = '▶';
   }
 }
 
-// Contagem Regressiva para 03 de Outubro de 2026
+// Contagem Regressiva para 18 de Dezembro de 2026
 const targetDate = new Date('2026-12-18T10:00:00').getTime();
 
 function updateCountdown() {
@@ -43,59 +50,22 @@ function updateCountdown() {
     const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-    document.getElementById('days').innerText = days < 10 ? '0' + days : days;
-    document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
-    document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
-    document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+
+    if (daysEl) daysEl.innerText = days < 10 ? '0' + days : days;
+    if (hoursEl) hoursEl.innerText = hours < 10 ? '0' + hours : hours;
+    if (minutesEl) minutesEl.innerText = minutes < 10 ? '0' + minutes : minutes;
+    if (secondsEl) secondsEl.innerText = seconds < 10 ? '0' + seconds : seconds;
   }
 }
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-document.addEventListener('DOMContentLoaded', function() {
-  const rsvpForm = document.getElementById('rsvp-form');
-
-  if (rsvpForm) {
-    rsvpForm.addEventListener('submit', function(e) {
-      // Impede o recarregamento da página
-      e.preventDefault();
-
-      // Captura os dados inseridos
-      const nome1 = document.getElementById('nome1') ? document.getElementById('nome1').value : '';
-      const nome2 = document.getElementById('nome2') ? document.getElementById('nome2').value : '';
-      const presencaOpcao = document.querySelector('input[name="presenca"]:checked');
-      const presenca = presencaOpcao ? presencaOpcao.value : 'Sim';
-      const mensagem = document.getElementById('mensagem') ? document.getElementById('mensagem').value : '';
-
-      const numeroWhatsApp = "258849301792"; // Número no formato internacional (+258)
-      let texto = "";
-
-      // CONDIÇÃO: Mensagem diferente para "Sim" ou "Não"
-      if (presenca === "Sim" || presenca === "sim") {
-        texto = `*Confirmação de Presença - Casamento*%0A%0A`;
-        texto += `Olá! Confirmamos a nossa presença com muito gosto! 🎉%0A%0A`;
-        texto += `👤 *Convidado:* ${nome1}%0A`;
-        if (nome2) texto += `👥 *Acompanhante:* ${nome2}%0A`;
-        if (mensagem) texto += `💬 *Mensagem:* ${mensagem}%0A`;
-      } else {
-        texto = `*Aviso de Ausência - Casamento*%0A%0A`;
-        texto += `Olá! Infelizmente não poderemos estar presentes no vosso grande dia. 💔%0A%0A`;
-        texto += `👤 *Convidado:* ${nome1}%0A`;
-        if (nome2) texto += `👥 *Acompanhante:* ${nome2}%0A`;
-        if (mensagem) texto += `💬 *Mensagem:* ${mensagem}%0A`;
-        texto += `%0ADesejamos toda a felicidade do mundo aos noivos!`;
-      }
-
-      // Abre o WhatsApp com a mensagem personalizada pronta
-      window.open(`https://wa.me/${numeroWhatsApp}?text=${texto}`, '_blank');
-
-      // Limpa os campos do formulário
-      rsvpForm.reset();
-    });
-  }
-});
-// 1. Função para trocar o destaque visual dos botões Sim/Não
+// RSVP / Confirmação de Presença
 function selecionarOpcao(elemento) {
   const cards = document.querySelectorAll('.radio-card');
   cards.forEach(card => card.classList.remove('active'));
@@ -106,8 +76,6 @@ function selecionarOpcao(elemento) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  
-  // 2. Envio da Confirmação de Presença
   const rsvpForm = document.getElementById('rsvp-form');
   if (rsvpForm) {
     rsvpForm.addEventListener('submit', function(e) {
@@ -139,53 +107,43 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 3. Publicar Mensagem no Mural
-  document.addEventListener("DOMContentLoaded", function() {
-  carregarMensagensDoStorage();
-
+  // Mural de Mensagens
   const muralForm = document.getElementById("mural-form");
   if (muralForm) {
     muralForm.addEventListener("submit", function(e) {
       e.preventDefault();
-
       const nome = document.getElementById("mural-nome").value.trim();
       const texto = document.getElementById("mural-texto").value.trim();
 
       if (!nome || !texto) return;
 
-      // Obter data atual formatada (ex: 10 de Outubro, 2026)
       const dataAtual = new Date().toLocaleDateString("pt-PT", {
         day: "numeric",
         month: "long",
         year: "numeric"
       });
 
-      const novaMensagem = {
-        nome: nome,
-        texto: texto,
-        data: dataAtual
-      };
-
-      // Guardar no localStorage
+      const novaMensagem = { nome, texto, data: dataAtual };
       let mensagens = JSON.parse(localStorage.getItem("muralMensagens") || "[]");
-      mensagens.unshift(novaMensagem); // Adiciona no início da lista
+      mensagens.unshift(novaMensagem);
       localStorage.setItem("muralMensagens", JSON.stringify(mensagens));
 
-      // Atualizar o mural na tela e limpar formulário
       carregarMensagensDoStorage();
       muralForm.reset();
     });
   }
+
+  carregarMensagensDoStorage();
+  atualizarInterfaceEHistorico();
+  animarAoScroll();
 });
 
+// Funções do Mural
 function carregarMensagensDoStorage() {
   const muralCards = document.getElementById("mural-cards");
   if (!muralCards) return;
 
-  // Mensagens padrão iniciais (Maria João e Carlos Mendes) + as novas guardadas
   const mensagensGuardadas = JSON.parse(localStorage.getItem("muralMensagens") || "[]");
-
-  // HTML padrão de exemplo inicial caso queiras mantê-los fixos ou podes deixar dinâmico:
   let htmlConteudo = `
       <div class="mural-card">
         <h4>Maria João</h4>
@@ -193,7 +151,6 @@ function carregarMensagensDoStorage() {
         <p>"Desejo toda a felicidade do mundo a vocês dois! Que este amor seja eterno."</p>
         <span class="mural-footer">Com carinho</span>
       </div>
-
       <div class="mural-card">
         <h4>Carlos Mendes</h4>
         <span class="mural-date">18 de Outubro, 2026</span>
@@ -202,7 +159,6 @@ function carregarMensagensDoStorage() {
       </div>
   `;
 
-  // Adicionar as mensagens enviadas pelos utilizadores dinamicamente
   mensagensGuardadas.forEach(msg => {
     htmlConteudo += `
       <div class="mural-card">
@@ -217,17 +173,16 @@ function carregarMensagensDoStorage() {
   muralCards.innerHTML = htmlConteudo;
 }
 
-// Função de segurança simples para evitar erros de formatação no texto
 function escapeHtml(text) {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
-// Função para abrir e fechar os detalhes do M-Pesa / Banco abaixo do botão
+
+// Detalhes de Pagamento / Presentes
 function toggleDetalhes(tipo) {
   const mpesa = document.getElementById('detalhes-mpesa');
   const banco = document.getElementById('detalhes-banco');
 
   if (tipo === 'mpesa') {
-    // Alterna o M-Pesa e fecha o banco se estiver aberto
     if (mpesa.style.display === 'block') {
       mpesa.style.display = 'none';
     } else {
@@ -235,7 +190,6 @@ function toggleDetalhes(tipo) {
       if (banco) banco.style.display = 'none';
     }
   } else if (tipo === 'banco') {
-    // Alterna o Banco e fecha o M-Pesa se estiver aberto
     if (banco.style.display === 'block') {
       banco.style.display = 'none';
     } else {
@@ -245,30 +199,80 @@ function toggleDetalhes(tipo) {
   }
 }
 
-function marcarPresente(item) {
-  alert("Obrigado por escolher oferecer: " + item + "!.");
+// Escolha de Presentes da Lista
+function escolherPresente(presente, btn) {
+  const dataHora = new Date().toLocaleString("pt-PT");
+  let registos = JSON.parse(localStorage.getItem("registosPresentes") || "[]");
+  
+  if (!registos.some(item => item.presente === presente)) {
+    registos.push({ presente: presente, data: dataHora });
+    localStorage.setItem("registosPresentes", JSON.stringify(registos));
+  }
+
+  marcarComoEscolhido(btn);
+  atualizarInterfaceEHistorico();
+
+  const numeroTelefone = "258845770605";
+  const textoMensagem = `Olá! O seguinte presente foi escolhido na lista do site: 🎁 *${presente}* (Data: ${dataHora})`;
+  const urlWhatsapp = `https://wa.me/${numeroTelefone}?text=${encodeURIComponent(textoMensagem)}`;
+
+  window.open(urlWhatsapp, "_blank");
 }
-// Função para fazer os elementos ascenderem ao rolar a página
-// Função para fazer os elementos ascenderem SEMPRE que surgem no ecrã
+
+function marcarComoEscolhido(btn) {
+  btn.innerText = "Presente Escolhido";
+  btn.style.backgroundColor = "#999999";
+  btn.style.cursor = "not-allowed";
+  btn.disabled = true;
+}
+
+function atualizarInterfaceEHistorico() {
+  const registos = JSON.parse(localStorage.getItem("registosPresentes") || "[]");
+  const listaHtml = document.getElementById("listaRegistosInternos");
+  if (!listaHtml) return;
+  
+  listaHtml.innerHTML = "";
+
+  if (registos.length === 0) {
+    listaHtml.innerHTML = "<li style='color: #888;'>Nenhum presente escolhido até o momento.</li>";
+    return;
+  }
+
+  registos.forEach(reg => {
+    const botoes = document.querySelectorAll("button[data-presente]");
+    botoes.forEach(btn => {
+      if (btn.getAttribute("data-presente") === reg.presente) {
+        marcarComoEscolhido(btn);
+      }
+    });
+
+    const li = document.createElement("li");
+    li.style.marginBottom = "4px";
+    li.innerHTML = `<strong>${reg.presente}</strong> <span style="color: #777; font-size: 0.75rem;">(${reg.data})</span>`;
+    listaHtml.appendChild(li);
+  });
+}
+
+function limparRegistos() {
+  if (confirm("Tem certeza que deseja apagar o histórico de escolhas?")) {
+    localStorage.removeItem("registosPresentes");
+    location.reload();
+  }
+}
+
+// Efeito de animação ao fazer scroll
 function animarAoScroll() {
   const elementos = document.querySelectorAll('.reveal');
   const alturaJanela = window.innerHeight;
 
   elementos.forEach(elemento => {
     const rect = elemento.getBoundingClientRect();
-    const posicaoTopo = rect.top;
-    const posicaoBase = rect.bottom;
-
-    // Se o elemento entra no ecrã ao rolar
-    if (posicaoTopo < alturaJanela * 0.85 && posicaoBase > 0) {
+    if (rect.top < alturaJanela * 0.85 && rect.bottom > 0) {
       elemento.classList.add('active');
     } else {
-      // Remove a classe quando sai do ecrã, para poder ascender novamente
       elemento.classList.remove('active');
     }
   });
 }
 
-// Escuta a rolagem da página e executa ao carregar
 window.addEventListener('scroll', animarAoScroll);
-document.addEventListener('DOMContentLoaded', animarAoScroll);
