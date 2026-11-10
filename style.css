@@ -1,0 +1,652 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  background-color: #fcfbfa;
+  color: #4a4a4a;
+  overflow-x: hidden;
+}
+
+/* Capa / Hero */
+/* Capa / Hero Section */
+.hero-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  /* Substitui 'bg-capa.jpg' pelo nome da tua foto */
+  background: url('bg-capa.jpeg') center/cover no-repeat; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* O Segredo do Degradê Branco na parte inferior */
+.hero-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%; /* Controla a altura onde o degradê começa */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 1;
+}
+
+/* Camada escura no topo (para destacar o texto dourado) */
+.hero-overlay {
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 60%);
+  z-index: 1;
+}
+
+/* Conteúdo centralizado e acima do degradê */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  padding: 0 20px;
+}
+
+.sub-title {
+  font-size: 0.8rem;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+  color: #f3e5ab;
+  text-transform: uppercase;
+}
+
+.names-script {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3.5rem;
+  color: #d4af37;
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+.wedding-date {
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  font-weight: 500;
+  color: #e6e6e6;
+}
+
+/* BOTÃO DOURADO PREENCHIDO (RESTAURADO) */
+.btn-abrir {
+  display: inline-block !important;
+  padding: 12px 30px !important;
+  background-color: #c5a059 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 25px !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 15px rgba(197, 160, 89, 0.4) !important;
+  transition: all 0.3s ease;
+}
+
+.btn-abrir:hover {
+  background-color: #b38f48 !important;
+  transform: translateY(-2px);
+}
+
+/* Estilo da seta de rolagem */
+.arrow-down {
+  font-size: 1.8rem;
+  color: #8c7355; /* Cor dourada mais visível */
+  margin-top: 15px;
+  display: block;
+  opacity: 0.9;
+  text-shadow: 0px 1px 3px rgba(255, 255, 255, 0.8); /* Sombra clara para se destacar do fundo */
+  animation: bounce 2s infinite; /* Animação suave para flutuar */
+}
+
+/* Animação para a seta subir e descer suavemente */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Versículo */
+.quote-section {
+  padding: 50px 25px;
+  text-align: center;
+  background-color: #fbf8f3;
+}
+
+.quote-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #8c7355;
+  line-height: 1.7;
+}
+
+.quote-author {
+  margin-top: 15px;
+  font-size: 0.85rem;
+  color: #a68d6d;
+  text-decoration: underline;
+  letter-spacing: 1px;
+}
+
+/* Seções Gerais */
+.section {
+  padding: 45px 20px;
+  text-align: center;
+}
+
+.section-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.8rem;
+  color: #c5a059;
+  margin-bottom: 15px;
+}
+
+.section-desc {
+  font-size: 0.85rem;
+  color: #777;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto 30px auto;
+}
+
+/* Os Noivos */
+.noivo-card {
+  margin: 20px 0;
+}
+
+.avatar-frame {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 15px auto;
+  border: 4px solid #ffffff;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.noivo-nome {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: #a68d6d;
+}
+
+.heart-divider {
+  font-size: 1.2rem;
+  margin: 15px 0 5px 0;
+}
+
+.sub-date {
+ /* Ajuste elegante e proporcional para a data */
+
+  font-family: 'Montserrat', sans-serif; /* Fonte uniforme e limpa */
+  font-size: 0.95rem;                    /* Tamanho equilibrado */
+  font-weight: 500;                       /* Peso médio elegante */
+  letter-spacing: 2px;                   /* Espaçamento entre letras/números */
+  color: #b89759;                         /* Tom dourado harmonioso */
+  text-transform: uppercase;             /* Tudo em maiúsculas */
+  margin: 15px 0 25px 0;
+
+}
+
+/* Programa */
+.card-info {
+  background: #fbf8f3;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.card-icon {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.card-info h3 {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.card-time {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.card-location {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.btn-outline {
+  display: inline-block;
+  padding: 8px 20px;
+  border: 1px solid #c5a059;
+  border-radius: 20px;
+  color: #c5a059;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+/* Contagem Regressiva */
+.countdown-section {
+  background-color: #fbf8f3;
+}
+
+.timer-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.timer-box {
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 10px;
+  min-width: 65px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.timer-box span {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: #a68d6d;
+}
+
+.timer-box label {
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  color: #aaa;
+}
+
+/* RSVP */
+.rsvp-form {
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  outline: none;
+  background: #fafafa;
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+}
+
+.radio-card {
+  flex: 1;
+  border: 1px solid #eee;
+  padding: 12px 8px;
+  border-radius: 8px;
+  background: #fbf8f3;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.radio-card input {
+  display: none;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background-color: #c5a059;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Mural */
+.mural-section {
+  background-color: #fbf8f3;
+}
+
+.mural-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: left;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.mural-card h4 {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.mural-date {
+  font-size: 0.7rem;
+  color: #aaa;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.mural-card p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #8c7355;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.mural-footer {
+  font-size: 0.75rem;
+  color: #c5a059;
+}
+
+/* Galeria */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.gallery-item {
+  aspect-ratio: 1;
+  background: #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Presentes */
+/* Secção Lista de Presentes */
+.presentes-section {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #faf7f2; /* Fundo creme suave igual à imagem */
+}
+
+/* Ícone num círculo suave */
+.presentes-icon-circle {
+  width: 60px;
+  height: 60px;
+  background-color: #f3ece1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px auto;
+  font-size: 1.6rem;
+}
+
+.presentes-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  color: #8c7355;
+  margin-bottom: 15px;
+}
+
+.presentes-desc {
+  font-size: 0.95rem;
+  color: #777;
+  max-width: 450px;
+  margin: 0 auto 30px auto;
+  line-height: 1.5;
+}
+
+/* Contentor de botões empilhados */
+.presentes-buttons {
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Botões Arredondados Brancos */
+.btn-presente {
+  width: 100%;
+  background-color: #ffffff;
+  color: #8c7355;
+  border: 1px solid #eae2d6;
+  padding: 16px;
+  border-radius: 30px; /* Bordas arredondadas estilo pílula */
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  transition: all 0.3s ease;
+}
+
+.btn-presente:hover {
+  background-color: #fcfbfa;
+  transform: translateY(-1px);
+}
+
+/* Área de Detalhes (Aparece diretamente abaixo sem sobrepor nada) */
+.detalhes-info {
+  display: none; /* Inicia escondido */
+  background-color: #ffffff;
+  border: 1px solid #ebdcc8;
+  border-radius: 16px;
+  padding: 15px 20px;
+  margin-top: -4px;
+  margin-bottom: 8px;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #555;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.detalhes-info p {
+  margin: 4px 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Footer */
+.footer {
+  background-color: #222222;
+  color: #ffffff;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.footer-names {
+  font-size: 2.5rem;
+  color: #c5a059;
+}
+
+.footer-date {
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  margin: 10px 0;
+  color: #aaa;
+}
+
+.footer-text {
+  font-size: 0.75rem;
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.footer-contact {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* Player de Música Flutuante */
+.music-player-float {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px 16px 6px 6px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+  backdrop-filter: blur(5px);
+}
+
+.music-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background-color: #c5a059;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.music-label {
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  color: #8c7355;
+  font-weight: 600;
+}
+/* Estilo das opções do Radio no RSVP */
+.radio-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.radio-card {
+  flex: 1;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radio-card input[type="radio"] {
+  display: none; /* Esconde o círculo padrão */
+}
+
+/* Estado Ativo / Selecionado (Destaque Visual) */
+.radio-card.active {
+  border-color: #b89759;
+  background-color: #fefcf7;
+  box-shadow: 0 4px 10px rgba(184, 151, 89, 0.15);
+  font-weight: 600;
+  color: #8c7355;
+}
+
+/* Formulário do Mural */
+.mural-form {
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.btn-mural {
+  width: 100%;
+  background-color: #b89759;
+  color: #ffffff;
+  border: none;
+  padding: 14px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+/* Evita o zoom automático no Safari/iOS ao clicar nos campos */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea,
+select {
+  font-size: 16px !important; /* Tamanho mínimo para não ativar o auto-zoom */
+}
+/* Efeito de ascender suave ao fazer scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  will-change: opacity, transform;
+}
+
+/* Estado ativo quando o elemento entra no ecrã */
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
